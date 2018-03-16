@@ -12,7 +12,6 @@ import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.StaticHandler;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +22,8 @@ public class BeerService extends AbstractVerticle {
     @Override
     public void start(Future<Void> fut) {
 
+        this.config()
+            .put("http.port", 8000);
         // Create a Mongo client
         mongo = MongoClient.createShared(vertx, config());
 
@@ -47,6 +48,7 @@ public class BeerService extends AbstractVerticle {
         router.get("/api/beers/:id").handler(this::getOne);
         router.put("/api/beers/:id").handler(this::updateOne);
         router.delete("/api/beers/:id").handler(this::deleteOne);
+        router.get("/api/beers/ping").handler(this::ping);
 
         // Create the HTTP server and pass the "accept" method to the request handler.
         vertx.createHttpServer().requestHandler(router::accept).listen(
@@ -136,6 +138,10 @@ public class BeerService extends AbstractVerticle {
             routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
                     .end(Json.encodePrettily(beers));
         });
+    }
+
+    private void ping(RoutingContext routingContext) {
+        routingContext.response().end("pong");
     }
 
     private void createSomeData(Handler<AsyncResult<Void>> next, Future<Void> fut) {

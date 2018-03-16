@@ -49,6 +49,10 @@ public class Beer {
         return id;
     }
 
+    public String getStyle() {
+        return style;
+    }
+
     public Beer setName(String name) {
         this.name = name;
         return this;
@@ -61,6 +65,11 @@ public class Beer {
 
     public Beer setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public Beer setStyle(String style) {
+        this.style = style;
         return this;
     }
 }
