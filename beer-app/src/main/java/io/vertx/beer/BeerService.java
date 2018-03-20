@@ -22,8 +22,8 @@ public class BeerService extends AbstractVerticle {
     @Override
     public void start(Future<Void> fut) {
 
-        this.config()
-            .put("http.port", 8000);
+        /*this.config()
+            .put("http.port", 8000);*/
         // Create a Mongo client
         mongo = MongoClient.createShared(vertx, config());
 

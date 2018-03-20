@@ -40,9 +40,11 @@
     </div>
 </div>
 <script>
+    var apiKey = "565be8c2-bf44-42af-b257-03590612f5a7";
+
     var url = "/api/beers";
     //var url = "http://localhost:8080/api/beers";
-    var url = "http://localhost:8082?api-key=565be8c2-bf44-42af-b257-03590612f5a7";
+    var url = "http://localhost:8082/beer";
     
 
     $(function () {
@@ -50,22 +52,41 @@
         initModal();
     });
     function create(name, style, color) {
-        $.post("/api/beers", JSON.stringify({name: name, style: style, color: color}), function () {
+        $.post(url + "?api-key=" + apiKey , JSON.stringify({name: name, style: style, color: color}), function () {
             load();
         }, "json");
+        /*$.ajax({
+            method: "POST",
+            url: url,
+            headers: {
+                "X-Gravitee-Api-Key": apiKey
+            },
+            data: JSON.stringify({name: name, style: style, color: color})
+        }).done(function () {
+            load();
+        });*/
     }
     function remove(id) {
         $.ajax({
             method: "DELETE",
-            url: "/api/beers/" + id
+            url: url + "/" + id,
+            headers: {
+                "X-Gravitee-Api-Key": apiKey
+            },
+            type: "json"
         }).done(function () {
             load();
         });
     }
     function update(id, name, style, color) {
+        console.log(JSON.stringify({name: name, style: style, color: color}));
         $.ajax({
             method: "PUT",
-            url: "/api/beers/" + id,
+            url: url + "/" + id+ "?api-key=" + apiKey ,
+            headers: {
+                "X-Gravitee-Api-Key": apiKey
+            },
+            crossDomain: true,
             data: JSON.stringify({name: name, style: style, color: color})
         }).done(function () {
             load();
@@ -75,7 +96,7 @@
         
         $("#content").children().remove();
        
-        $.getJSON(url + "/api/beers", function (data) {
+        $.getJSON(url  + "?api-key=" + apiKey, function (data) {
             $.each(data, function (key, val) {
                 $("<tr><td>" + val.id + "</td><td>" + val.name + "</td><td>" + val.style + "</td>td>" + val.color + "</td>" +
                         "<td>" +
@@ -127,7 +148,7 @@
                 modal.find('#product-style').val(button.data("style"));
                 modal.find('#product-color').val(button.data("color"));
                 productAction.click(function () {
-                    update(id, $("#product-name").val(), $("#product-origin").val(), $("#product-color").val());
+                    update(id, $("#product-name").val(), $("#product-style").val(), $("#product-color").val());
                     $('#productModal').modal('toggle');
                 });
             }
