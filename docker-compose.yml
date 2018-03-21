@@ -37,9 +37,14 @@ services:
     managementapi:
     hostname: demo-managementapi
     image: graviteeio/management-api:latest
-    #links:
-    #  - mongodb
-    #  - elasticsearch
+    links:
+      - mongodb
+      - elasticsearch
     environment:
       - GRAVITEEIO_MONGODB_HOST=mongodb
       - GRAVITEEIO_ELASTIC_HOST=elasticsearch
+  keycloak:
+    image: jboss/keycloak
+    environment: 
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
