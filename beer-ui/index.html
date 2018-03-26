@@ -39,7 +39,21 @@
         </div>
     </div>
 </div>
+<script src="http://127.0.0.1:8000/auth/js/keycloak.js"></script>
 <script>
+    var keycloak = Keycloak({
+            url: 'http://127.0.0.1:8000/auth',
+            realm: 'BeerApp',
+            clientId: 'beer'
+        });
+
+        /*keycloak.init({ onLoad: 'login-required' }).success(function(authenticated) {
+            alert(authenticated ? 'authenticated' : 'not authenticated');
+        }).error(function() {
+            alert('failed to initialize');
+        });*/
+
+    
     var apiKey = "565be8c2-bf44-42af-b257-03590612f5a7";
 
     var url = "/api/beers";
